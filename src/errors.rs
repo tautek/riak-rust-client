@@ -11,10 +11,10 @@ pub struct ServerError {
 }
 
 impl ServerError {
-    pub fn new(error_code: u8, error_data: Vec<u8>) -> ServerError {
+    pub fn new<T: Into<Vec<u8>>>(error_code: u8, error_data: T) -> ServerError {
         ServerError {
             code: error_code,
-            data: error_data,
+            data: error_data.into(),
         }
     }
 }

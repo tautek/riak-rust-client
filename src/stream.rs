@@ -29,8 +29,8 @@ impl BucketStream {
     }
 
     /// return a list of every bucket from the stream
-    pub fn all(&mut self) -> Result<Vec<String>, RiakErr> {
-        let mut buckets: Vec<String> = Vec::new();
+    pub fn all(&mut self) -> Result<Vec<Vec<u8>>, RiakErr> {
+        let mut buckets: Vec<Vec<u8>> = Vec::new();
 
         loop {
             let next_buckets = match self.next() {
@@ -49,7 +49,7 @@ impl BucketStream {
     }
 
     /// return the next group of buckets from the stream
-    pub fn next(&mut self) -> Option<Result<Vec<String>, RiakErr>> {
+    pub fn next(&mut self) -> Option<Result<Vec<Vec<u8>>, RiakErr>> {
         if self.done {
             return None;
         }
@@ -62,7 +62,7 @@ impl BucketStream {
             };
 
             // parse the response
-            let rpb_resp = match parse_from_bytes::<RpbListBucketsResp>(&response) {
+            let mut rpb_resp = match parse_from_bytes::<RpbListBucketsResp>(&response) {
                 Ok(parsed) => parsed,
                 Err(error) => {
                     match self.connection.reconnect() {
@@ -77,13 +77,12 @@ impl BucketStream {
             };
 
             // retrieve the buckets from the rpb response
-            let resp_buckets = rpb_resp.get_buckets();
+            let resp_buckets = rpb_resp.take_buckets();
 
-            // get the buckets and convert them into a Vec<String>
-            let mut buckets: Vec<String> = Vec::new();
-            for bucket in resp_buckets {
-                let next_bucket = String::from_utf8_lossy(&bucket);
-                buckets.push(next_bucket.into_owned());
+            // get the buckets and convert them into a Vec<Vec<u8>>
+            let mut buckets: Vec<Vec<u8>> = Vec::new();
+            for bucket in resp_buckets.into_iter() {
+                buckets.push(bucket);
             }
 
             self.done = rpb_resp.get_done();
@@ -116,7 +115,7 @@ impl BucketStream {
             };
 
             // parse the response
-            let rpb_resp = match parse_from_bytes::<RpbListBucketsResp>(&response) {
+            let mut rpb_resp = match parse_from_bytes::<RpbListBucketsResp>(&response) {
                 Ok(parsed) => parsed,
                 Err(error) => {
                     match self.connection.reconnect() {
@@ -131,13 +130,12 @@ impl BucketStream {
             };
 
             // retrieve the buckets from the first response
-            let resp_buckets = rpb_resp.get_buckets();
+            let resp_buckets = rpb_resp.take_buckets();
 
             // store all found buckets
-            let mut buckets: Vec<String> = Vec::new();
-            for bucket in resp_buckets {
-                let next_bucket = String::from_utf8_lossy(&bucket);
-                buckets.push(next_bucket.into_owned());
+            let mut buckets: Vec<Vec<u8>> = Vec::new();
+            for bucket in resp_buckets.into_iter() {
+                buckets.push(bucket);
             }
 
             self.first_request_made = true;

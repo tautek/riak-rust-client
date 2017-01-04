@@ -247,14 +247,14 @@ impl Client {
     /// let buckets = riak.list_buckets().unwrap();
     ///
     /// for bucket in buckets.iter() {
-    ///     println!("found bucket named {}", bucket);
+    ///     println!("found bucket named {:?}", bucket);
     /// }
     /// ```
     ///
     /// # Errors
     ///
     /// TODO
-    pub fn list_buckets(&mut self) -> Result<Vec<String>, RiakErr> {
+    pub fn list_buckets(&mut self) -> Result<Vec<Vec<u8>>, RiakErr> {
         let mut bucket_stream = match self.stream_buckets() {
             Ok(bucket_stream) => bucket_stream,
             Err(error) => return Err(error),
@@ -652,7 +652,7 @@ impl Client {
     ///
     /// for preflist_item in preflist {
     ///     if preflist_item.is_primary {
-    ///         println!("found primary partition {} for key {} on node {}", preflist_item.partition, "testkey", preflist_item.node);
+    ///         println!("found primary partition {:?} for key {:?} on node {:?}", preflist_item.partition, "testkey", preflist_item.node);
     ///     }
     /// }
     /// ```

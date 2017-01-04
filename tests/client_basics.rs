@@ -55,7 +55,7 @@ fn test_basics() {
     let buckets = riak.list_buckets().unwrap();
     let mut bucket_exists = false;
     for bucket in buckets.iter() {
-        if bucket == "testbucket" {
+        if *bucket == "testbucket".as_bytes() {
             bucket_exists = true;
         }
     }
