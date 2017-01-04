@@ -21,7 +21,7 @@ You'll of course have to provide your own Riak nodes. If you don't already have 
 
 # Usage
 
-For complete documentation of what you can do with this client, see the [rustdoc](https://doc.rust-lang.org/book/documentation.html#about-rustdoc) documentation available on [docs.rs](https://docs.rs/riak/).
+For complete documentation of what you can do with this client, see the [rustdoc](https://doc.rust-lang.org/book/documentation.html#about-rustdoc) documentation [available on docs.rs](https://docs.rs/riak/).
 
 ## Examples
 
