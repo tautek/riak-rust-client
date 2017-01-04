@@ -33,9 +33,9 @@ impl BucketProps {
     }
 
     /// get the value of the "backend" property
-    pub fn get_backend(&self) -> Option<Vec<u8>> {
+    pub fn get_backend(&self) -> Option<&[u8]> {
         if self.0.has_backend() {
-            Some(self.0.get_backend().to_vec())
+            Some(self.0.get_backend())
         } else {
             None
         }
@@ -75,10 +75,10 @@ impl BucketProps {
     }
 
     /// get the value of the "chash_keyfun" property
-    pub fn get_chash_keyfun(&self) -> Option<(Vec<u8>, Vec<u8>)> {
+    pub fn get_chash_keyfun(&self) -> Option<(&[u8], &[u8])> {
         if self.0.has_chash_keyfun() {
             let modfun = self.0.get_chash_keyfun();
-            Some((modfun.get_module().to_vec(), modfun.get_function().to_vec()))
+            Some((modfun.get_module(), modfun.get_function()))
         } else {
             None
         }
@@ -107,9 +107,9 @@ impl BucketProps {
     }
 
     /// get the value of the "datatype" property
-    pub fn get_datatype(&self) -> Option<Vec<u8>> {
+    pub fn get_datatype(&self) -> Option<&[u8]> {
         if self.0.has_datatype() {
-            Some(self.0.get_datatype().to_vec())
+            Some(self.0.get_datatype())
         } else {
             None
         }
@@ -191,10 +191,10 @@ impl BucketProps {
     }
 
     /// get the value of the "linkfun" property
-    pub fn get_linkfun(&self) -> Option<(Vec<u8>, Vec<u8>)> {
+    pub fn get_linkfun(&self) -> Option<(&[u8], &[u8])> {
         if self.0.has_linkfun() {
-            let modfun = self.0.get_linkfun().clone();
-            Some((modfun.get_module().to_vec(), modfun.get_function().to_vec()))
+            let modfun = self.0.get_linkfun();
+            Some((modfun.get_module(), modfun.get_function()))
         } else {
             None
         }
@@ -377,9 +377,9 @@ impl BucketProps {
     }
 
     /// get the value of the "search_index" property
-    pub fn get_search_index(&self) -> Option<Vec<u8>> {
+    pub fn get_search_index(&self) -> Option<&[u8]> {
         if self.0.has_search_index() {
-            Some(self.0.get_search_index().to_vec())
+            Some(self.0.get_search_index())
         } else {
             None
         }
